@@ -5,7 +5,7 @@ import github from "@astrojs/github";
 import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
-  site: "https://gaurav-rm.github.io",
+  site: "https://gaurav-rm.github.io/",
 
   output: "static",
 
