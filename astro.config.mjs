@@ -6,7 +6,7 @@ import node from "@astrojs/node";
 import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
- site: "https://gaurav-rm.github.io",
+ site: "https://gaurav-RM.github.io",
   integrations: [icon()],
   output: "server",
 
