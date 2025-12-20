@@ -4,7 +4,22 @@ import { remarkReadingTime } from "./remark-reading-time.mjs";
 import node from "@astrojs/node";
 
 import tailwindcss from "@tailwindcss/vite";
-export default defineConfig({
-  site: "https://gaurav-rm.github.io/",
 
+export default defineConfig({
+ site: "https://gaurav-rm.github.io/",
+  integrations: [icon()],
+  output: "server",
+
+  adapter: node({
+    mode: "standalone",
+  }),
+
+  markdown: {
+    remarkPlugins: [remarkReadingTime],
+  },
+
+  vite: {
+    plugins: [tailwindcss()],
+  },
 });
+
