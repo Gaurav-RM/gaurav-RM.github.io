@@ -8,11 +8,11 @@ import tailwindcss from "@tailwindcss/vite";
 // https://astro.build/config
 export default defineConfig({
   site: 'https://gaurav-rm.github.io/',
-  base: '/gaurav-RM.github.io',
+  //base: '/gaurav-RM.github.io',
 
   
   integrations: [icon()],
-  output: "server",
+//  output: "server",
 
   adapter: node({
     mode: "standalone",
