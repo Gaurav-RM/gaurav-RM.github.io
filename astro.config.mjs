@@ -7,17 +7,4 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
   site: "https://gaurav-rm.github.io/",
 
-  output: "static",
-
-  adapter: github(),
-
-  integrations: [icon()],
-
-  markdown: {
-    remarkPlugins: [remarkReadingTime],
-  },
-
-  vite: {
-    plugins: [tailwindcss()],
-  },
 });
