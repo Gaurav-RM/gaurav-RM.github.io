@@ -1,22 +1,17 @@
 import { defineConfig } from "astro/config";
 import icon from "astro-icon";
 import { remarkReadingTime } from "./remark-reading-time.mjs";
-import node from "@astrojs/node";
-
+import github from "@astrojs/github";
 import tailwindcss from "@tailwindcss/vite";
 
-// https://astro.build/config
 export default defineConfig({
-  site: 'https://gaurav-rm.github.io/',
-  //base: '/gaurav-RM.github.io',
+  site: "https://gaurav-rm.github.io",
 
-  
+  output: "static",
+
+  adapter: github(),
+
   integrations: [icon()],
-//  output: "server",
-
-  adapter: node({
-    mode: "standalone",
-  }),
 
   markdown: {
     remarkPlugins: [remarkReadingTime],
