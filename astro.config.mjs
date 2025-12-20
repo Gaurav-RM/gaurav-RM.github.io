@@ -9,6 +9,7 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
   site: 'https://gaurav-rm.github.io/',
   base: '/gaurav-RM.github.io',
+  adapter: github(),
   integrations: [icon()],
   output: "server",
 
