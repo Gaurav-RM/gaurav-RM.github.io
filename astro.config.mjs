@@ -7,6 +7,7 @@ import tailwindcss from "@tailwindcss/vite";
 
 // https://astro.build/config
 export default defineConfig({
+  site: 'https://gaurav-rm.github.io/',
   integrations: [icon()],
   output: "server",
 
