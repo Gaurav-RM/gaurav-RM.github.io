@@ -83,15 +83,12 @@
 
 .skill-label{
 
-    font-size:14px;
-
-    fill:#333;
-
+    font-size:13px;
+    font-weight:600;
+    fill:#263238;
+    text-anchor:middle;
+    dominant-baseline:auto;
     pointer-events:none;
-
-    opacity:0;
-
-    transition:.25s;
 
 }
 
