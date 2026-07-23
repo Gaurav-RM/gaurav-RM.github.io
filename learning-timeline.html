@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Learning Journey</title>
   
-  <!-- Chart.js Engine and Date Adapter CDNs -->
+  <!-- Core Chart.js Engines -->
   <script src="https://jsdelivr.net"></script>
   <script src="https://jsdelivr.net"></script>
   
@@ -32,29 +32,23 @@
       margin: 40px auto;
     }
 
-    .chart-box {
+    .chart-wrapper {
       background: var(--bg-primary);
       border: 1px solid var(--border-color);
       border-radius: 12px;
       padding: 24px;
       box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
+      position: relative;
+      height: 450px;
     }
 
-    /* Detail slider card styling */
     #detail-panel {
       margin-top: 24px;
       padding: 20px;
       border-left: 4px solid var(--accent);
       background-color: var(--panel-bg);
       border-radius: 0 12px 12px 0;
-      box-shadow: inset 0 1px 2px rgb(0 0 0 / 0.02);
       display: none;
-      animation: fadeIn 0.3s ease-in-out;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(5px); }
-      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
@@ -64,11 +58,10 @@
   <h1 style="margin-bottom: 8px;">Learning Roadmap</h1>
   <p style="color: var(--text-muted); margin-bottom: 32px;">Click on any milestone icon to view learning summaries and deep dives.</p>
 
-  <div class="chart-box">
-    <canvas id="roadmapChart" height="400"></canvas>
+  <div class="chart-wrapper">
+    <canvas id="roadmapChart"></canvas>
   </div>
   
-  <!-- Info Display Section -->
   <div id="detail-panel">
     <h3 id="panel-title" style="margin: 0 0 6px 0; font-size: 1.25rem;"></h3>
     <small id="panel-date" style="color: var(--text-muted); font-weight: 500;"></small>
@@ -77,84 +70,88 @@
 </div>
 
 <script>
-  // Pull data from external JSON file asynchronously
-  async function initRoadmap() {
-    try {
-      const response = await fetch('./learning-data.json');
-      const rawData = await response.json();
+  const CATEGORIES = { AI: 4, Language: 3, OtherTech: 2, Engineering: 1 };
 
-      // Convert image path strings to real pre-loaded HTML Image objects
-      const processedPoints = rawData.map(item => {
-        const img = new Image(28, 28);
+  // Hardcoded direct database array overrides browser CORS security blocks locally
+  const rawData = [
+    { x: "2026-01-15", y: CATEGORIES.Engineering, title: "Data Structures & Algorithms", desc: "Mastered tree traversals, graph algorithms, and time complexity analysis.", iconUrl: "https://icons8.com" },
+    { x: "2026-02-10", y: CATEGORIES.Language, title: "TypeScript Advanced Types", desc: "Learned utility types, generics, and conditional type mapping.", iconUrl: "https://icons8.com" },
+    { x: "2026-03-05", y: CATEGORIES.OtherTech, title: "Docker Containers & Networks", desc: "Configured multi-container microservice environments using docker-compose.", iconUrl: "https://icons8.com" },
+    { x: "2026-04-20", y: CATEGORIES.AI, title: "LLM Prompt Engineering", desc: "Explored multi-shot prompting, system instructions, and RAG architectures.", iconUrl: "https://icons8.com" }
+  ];
+
+  // Promise logic ensuring icons render natively without popping out blank
+  function preloadMilestoneImages(data) {
+    return Promise.all(data.map(item => {
+      return new Promise((resolve) => {
+        const img = new Image(32, 32);
         img.src = item.iconUrl;
-        return {
-          ...item,
-          pointStyle: img
+        img.onload = () => {
+          item.pointStyle = img;
+          resolve(item);
+        };
+        img.onerror = () => {
+          item.pointStyle = 'circle'; // Standard fallback style if image breaks
+          resolve(item);
         };
       });
+    }));
+  }
 
-      const ctx = document.getElementById('roadmapChart').getContext('2d');
-      
-      new Chart(ctx, {
-        type: 'scatter',
-        data: {
-          datasets: [{
-            data: processedPoints,
-            pointStyle: processedPoints.map(p => p.pointStyle),
-            pointHoverRadius: 18
-          }]
+  async function renderChart() {
+    const processedPoints = await preloadMilestoneImages(rawData);
+    const ctx = document.getElementById('roadmapChart').getContext('2d');
+    
+    new Chart(ctx, {
+      type: 'scatter',
+      data: {
+        datasets: [{
+          data: processedPoints,
+          pointStyle: processedPoints.map(p => p.pointStyle),
+          pointHoverRadius: 20
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        onClick: (event, elements) => {
+          if (elements.length > 0) {
+            const index = elements[0].index;
+            const matched = processedPoints[index];
+            
+            document.getElementById('panel-title').innerText = matched.title;
+            document.getElementById('panel-date').innerText = `Achieved on: ${matched.x}`;
+            document.getElementById('panel-desc').innerText = matched.desc;
+            document.getElementById('detail-panel').style.display = 'block';
+          }
         },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: { display: false }
+        scales: {
+          x: {
+            type: 'time',
+            time: { unit: 'month', displayFormats: { month: 'MMM yyyy' } },
+            title: { display: true, text: 'Timeline Progression' }
           },
-          // Click monitoring action
-          onClick: (event, elements, chart) => {
-            if (elements.length > 0) {
-              const index = elements[0].index;
-              const matched = processedPoints[index];
-              
-              document.getElementById('panel-title').innerText = matched.title;
-              document.getElementById('panel-date').innerText = `Achieved on: ${matched.x}`;
-              document.getElementById('panel-desc').innerText = matched.desc;
-              document.getElementById('detail-panel').style.display = 'block';
-            }
-          },
-          scales: {
-            x: {
-              type: 'time',
-              time: { unit: 'month', displayFormats: { month: 'MMM yyyy' } },
-              grid: { color: '#f1f5f9' },
-              title: { display: true, text: 'Timeline Progression' }
-            },
-            y: {
-              min: 0.5,
-              max: 4.5,
-              ticks: {
-                stepSize: 1,
-                callback: function(value) {
-                  if (value === 4) return 'AI Technologies';
-                  if (value === 3) return 'Language';
-                  if (value === 2) return 'Other Tech / Techniques';
-                  if (value === 1) return 'Engineering (Base)';
-                  return '';
-                }
-              },
-              grid: { color: '#e2e8f0' }
+          y: {
+            min: 0.5,
+            max: 4.5,
+            ticks: {
+              stepSize: 1,
+              callback: function(value) {
+                if (value === 4) return 'AI Technologies';
+                if (value === 3) return 'Language';
+                if (value === 2) return 'Other Tech / Techniques';
+                if (value === 1) return 'Engineering (Base)';
+                return '';
+              }
             }
           }
         }
-      });
-
-    } catch (error) {
-      console.error("Error loading roadmap milestones:", error);
-    }
+      }
+    });
   }
 
-  // Execute chart on load
-  initRoadmap();
+  renderChart();
 </script>
 
 </body>
