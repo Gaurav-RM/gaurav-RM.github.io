@@ -372,3 +372,46 @@
     }
 
 }
+line{
+
+    stroke-dasharray:1200;
+
+    stroke-dashoffset:1200;
+
+    animation:drawLine 2s ease forwards;
+
+}
+
+@keyframes drawLine{
+
+    to{
+
+        stroke-dashoffset:0;
+
+    }
+
+}
+
+.roadmap-dot{
+
+    animation:pop .4s ease forwards;
+
+    transform-origin:center;
+
+}
+
+@keyframes pop{
+
+    0%{
+
+        transform:scale(0);
+
+    }
+
+    100%{
+
+        transform:scale(1);
+
+    }
+
+}
