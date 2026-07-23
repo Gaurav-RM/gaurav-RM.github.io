@@ -1,0 +1,30 @@
+[
+  { 
+    "x": "2026-01-15", 
+    "y": 1, 
+    "title": "Data Structures & Algorithms", 
+    "desc": "Mastered tree traversals, graph algorithms, and time complexity analysis.",
+    "iconUrl": "https://icons8.com" 
+  },
+  { 
+    "x": "2026-02-10", 
+    "y": 3, 
+    "title": "TypeScript Advanced Types", 
+    "desc": "Learned utility types, generics, and conditional type mapping.",
+    "iconUrl": "https://icons8.com" 
+  },
+  { 
+    "x": "2026-03-05", 
+    "y": 2, 
+    "title": "Docker Containers & Networks", 
+    "desc": "Configured multi-container microservice environments using docker-compose.",
+    "iconUrl": "https://icons8.com" 
+  },
+  { 
+    "x": "2026-04-20", 
+    "y": 4, 
+    "title": "LLM Prompt Engineering", 
+    "desc": "Explored multi-shot prompting, system instructions, and RAG architectures.",
+    "iconUrl": "https://icons8.com" 
+  }
+]
