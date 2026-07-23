@@ -1,0 +1,44 @@
+[
+  {
+    "title":"C",
+    "category":"Engineering",
+    "year":2021,
+    "description":"Started programming."
+  },
+  {
+    "title":"Java",
+    "category":"Engineering",
+    "year":2022,
+    "description":"Object-oriented programming."
+  },
+  {
+    "title":"Linux",
+    "category":"Technology",
+    "year":2022,
+    "description":"Daily development environment."
+  },
+  {
+    "title":"Docker",
+    "category":"Technology",
+    "year":2023,
+    "description":"Containerization."
+  },
+  {
+    "title":"Apache NiFi",
+    "category":"Technology",
+    "year":2025,
+    "description":"Enterprise ETL."
+  },
+  {
+    "title":"Python",
+    "category":"Language",
+    "year":2024,
+    "description":"Automation."
+  },
+  {
+    "title":"Machine Learning",
+    "category":"AI",
+    "year":2025,
+    "description":"ML models."
+  }
+]
