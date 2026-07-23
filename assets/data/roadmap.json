@@ -1,375 +1,73 @@
-
-/* ==========================================
-   ROADMAP SECTION
-========================================== */
-
-.roadmap-section {
-    padding: 90px 0;
-    background: #f7f9fc;
-}
-
-.roadmap-title {
-    font-size: 2.8rem;
-    font-weight: 700;
-    color: #1976d2;
-    margin-bottom: 15px;
-}
-
-.roadmap-subtitle {
-    color: #666;
-    font-size: 1.1rem;
-    margin-bottom: 50px;
-}
-
-.roadmap-wrapper {
-    width: 100%;
-    overflow-x: auto;
-    overflow-y: hidden;
-    border-radius: 12px;
-    background: white;
-    padding: 25px;
-    box-shadow: 0 12px 40px rgba(0,0,0,.08);
-}
-
-/* ==========================================
-   SVG
-========================================== */
-
-#roadmap-svg{
-    width:100%;
-    min-height:650px;
-    display:block;
-}
-
-/* ==========================================
-   Axis
-========================================== */
-
-.axis-line{
-    stroke:#bdbdbd;
-    stroke-width:2;
-}
-
-.grid-line{
-    stroke:#eeeeee;
-    stroke-width:1;
-}
-
-.year-line{
-    stroke:#d5d5d5;
-    stroke-width:1;
-}
-
-/* ==========================================
-   Labels
-========================================== */
-
-.category-label{
-
-    font-size:18px;
-
-    font-weight:700;
-
-    fill:#37474f;
-
-}
-
-.year-label{
-
-    font-size:15px;
-
-    fill:#666;
-
-}
-
-.skill-label{
-
-    font-size:14px;
-
-    fill:#333;
-
-    pointer-events:none;
-
-    opacity:0;
-
-    transition:.25s;
-
-}
-
-/* ==========================================
-   Category Colors
-========================================== */
-
-.engineering-line{
-    stroke:#1565c0;
-    stroke-width:3;
-}
-
-.technology-line{
-    stroke:#43a047;
-    stroke-width:3;
-}
-
-.language-line{
-    stroke:#fb8c00;
-    stroke-width:3;
-}
-
-.ai-line{
-    stroke:#8e24aa;
-    stroke-width:3;
-}
-
-/* ==========================================
-   Dots
-========================================== */
-
-.roadmap-dot{
-
-    cursor:pointer;
-
-    transition:.25s;
-
-    stroke:white;
-
-    stroke-width:3;
-
-}
-
-.dot-engineering{
-
-    fill:#1565c0;
-
-}
-
-.dot-technology{
-
-    fill:#43a047;
-
-}
-
-.dot-language{
-
-    fill:#fb8c00;
-
-}
-
-.dot-ai{
-
-    fill:#8e24aa;
-
-}
-
-.roadmap-dot:hover{
-
-    transform:scale(1.25);
-
-    filter:drop-shadow(0 0 10px rgba(0,0,0,.25));
-
-}
-
-/* ==========================================
-   Tooltip
-========================================== */
-
-.roadmap-tooltip{
-
-    position:absolute;
-
-    background:white;
-
-    border-radius:10px;
-
-    padding:15px;
-
-    box-shadow:0 8px 25px rgba(0,0,0,.15);
-
-    width:260px;
-
-    z-index:999;
-
-    display:none;
-
-}
-
-.roadmap-tooltip h5{
-
-    margin:0;
-
-    color:#1976d2;
-
-    font-size:18px;
-
-}
-
-.roadmap-tooltip small{
-
-    color:#777;
-
-}
-
-.roadmap-tooltip p{
-
-    margin-top:10px;
-
-    color:#444;
-
-    line-height:1.5;
-
-}
-
-/* ==========================================
-   Popup
-========================================== */
-
-.roadmap-popup{
-
-    position:fixed;
-
-    top:50%;
-
-    left:50%;
-
-    transform:translate(-50%,-50%) scale(.8);
-
-    width:600px;
-
-    max-width:95%;
-
-    background:white;
-
-    border-radius:15px;
-
-    box-shadow:0 20px 70px rgba(0,0,0,.35);
-
-    padding:35px;
-
-    z-index:5000;
-
-    opacity:0;
-
-    visibility:hidden;
-
-    transition:.3s;
-
-}
-
-.roadmap-popup.show{
-
-    opacity:1;
-
-    visibility:visible;
-
-    transform:translate(-50%,-50%) scale(1);
-
-}
-
-.roadmap-popup h3{
-
-    margin-top:0;
-
-    color:#1976d2;
-
-}
-
-.popup-close{
-
-    position:absolute;
-
-    top:18px;
-
-    right:22px;
-
-    font-size:28px;
-
-    cursor:pointer;
-
-    color:#999;
-
-}
-
-.popup-close:hover{
-
-    color:#1976d2;
-
-}
-
-/* ==========================================
-   Fade Animation
-========================================== */
-
-.fade-in{
-
-    opacity:0;
-
-    animation:fadeIn .8s forwards;
-
-}
-
-@keyframes fadeIn{
-
-    from{
-
-        opacity:0;
-
-        transform:translateY(20px);
-
+[
+    {
+        "title":"C",
+        "category":"Engineering",
+        "year":2021,
+        "month":3,
+        "description":"Started programming."
+    },
+
+    {
+        "title":"Java",
+        "category":"Engineering",
+        "year":2022,
+        "month":5,
+        "description":"Object Oriented Programming."
+    },
+
+    {
+        "title":"Linux",
+        "category":"Technologies",
+        "year":2022,
+        "month":9,
+        "description":"Daily Linux usage."
+    },
+
+    {
+        "title":"Docker",
+        "category":"Technologies",
+        "year":2023,
+        "month":4,
+        "description":"Containerization."
+    },
+
+    {
+        "title":"Python",
+        "category":"Languages",
+        "year":2023,
+        "month":8,
+        "description":"Automation."
+    },
+
+    {
+        "title":"Apache NiFi",
+        "category":"Technologies",
+        "year":2025,
+        "month":2,
+        "description":"Enterprise ETL."
+    },
+
+    {
+        "title":"Spark",
+        "category":"Technologies",
+        "year":2025,
+        "month":9,
+        "description":"Distributed Computing."
+    },
+
+    {
+        "title":"Machine Learning",
+        "category":"AI Technologies",
+        "year":2025,
+        "month":11,
+        "description":"ML Fundamentals."
+    },
+
+    {
+        "title":"AI Agents",
+        "category":"AI Technologies",
+        "year":2026,
+        "month":5,
+        "description":"LangGraph & MCP."
     }
-
-    to{
-
-        opacity:1;
-
-        transform:translateY(0);
-
-    }
-
-}
-
-/* ==========================================
-   Responsive
-========================================== */
-
-@media(max-width:992px){
-
-    .roadmap-title{
-
-        font-size:2.2rem;
-
-    }
-
-    #roadmap-svg{
-
-        min-width:1200px;
-
-    }
-
-}
-
-@media(max-width:600px){
-
-    .roadmap-section{
-
-        padding:60px 0;
-
-    }
-
-    .roadmap-title{
-
-        font-size:1.8rem;
-
-    }
-
-    .roadmap-subtitle{
-
-        font-size:.95rem;
-
-    }
-
-    .roadmap-wrapper{
-
-        padding:15px;
-
-    }
-
-}
+]
