@@ -348,7 +348,7 @@ function drawSkills(){
 
         dot.addEventListener("mouseenter",()=>{
 
-            label.style.opacity=1;
+         
 
             dot.setAttribute("r",10);
 
