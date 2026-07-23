@@ -137,3 +137,82 @@
     height:100%;
 
 }
+.roadmap-dot{
+
+position:absolute;
+
+width:18px;
+
+height:18px;
+
+border-radius:50%;
+
+cursor:pointer;
+
+transform:scale(0);
+
+transition:.3s;
+
+animation:pop .5s forwards;
+
+box-shadow:0 0 12px rgba(0,0,0,.25);
+
+}
+
+.roadmap-dot:hover{
+
+transform:scale(1.6);
+
+z-index:50;
+
+}
+
+.roadmap-dot span{
+
+position:absolute;
+
+top:-30px;
+
+left:-20px;
+
+white-space:nowrap;
+
+font-size:13px;
+
+font-weight:bold;
+
+opacity:0;
+
+transition:.3s;
+
+background:white;
+
+padding:4px 8px;
+
+border-radius:6px;
+
+box-shadow:0 2px 10px rgba(0,0,0,.15);
+
+}
+
+.roadmap-dot:hover span{
+
+opacity:1;
+
+}
+
+@keyframes pop{
+
+0%{
+
+transform:scale(0);
+
+}
+
+100%{
+
+transform:scale(1);
+
+}
+
+}
