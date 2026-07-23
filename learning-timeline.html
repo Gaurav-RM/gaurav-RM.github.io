@@ -5,10 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Learning Journey</title>
   
-  <!-- Enforced UNPKG Script Loading Chain -->
-  <script src="https://unpkg.com"></script>
-  <script src="https://unpkg.com"></script>
-  <script src="https://unpkg.com"></script>
+  <!-- Standalone Chart.js Bundle using an alternative CDN to bypass network blocks -->
+  <script src="https://pagecdn.io" crossorigin="anonymous"></script>
   
   <style>
     :root {
@@ -50,12 +48,6 @@
       background-color: var(--panel-bg);
       border-radius: 0 12px 12px 0;
       display: none;
-      animation: fadeIn 0.25s ease-in-out;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(4px); }
-      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
@@ -63,7 +55,7 @@
 
 <div class="container">
   <h1 style="margin-bottom: 8px;">Learning Roadmap</h1>
-  <p style="color: var(--text-muted); margin-bottom: 32px;">Click on any milestone icon to view learning summaries and deep dives.</p>
+  <p style="color: var(--text-muted); margin-bottom: 32px;">Click on any milestone bar to view learning summaries and deep dives.</p>
 
   <div class="chart-wrapper">
     <canvas id="roadmapChart"></canvas>
@@ -71,110 +63,84 @@
   
   <div id="detail-panel">
     <h3 id="panel-title" style="margin: 0 0 6px 0; font-size: 1.25rem;"></h3>
-    <small id="panel-date" style="color: var(--text-muted); font-weight: 500;"></small>
     <p id="panel-desc" style="margin: 14px 0 0 0; line-height: 1.6; color: #334155;"></p>
   </div>
 </div>
 
 <script>
-  // Ensure DOM and Chart engines are fully loaded before rendering
   window.addEventListener('DOMContentLoaded', () => {
     if (typeof Chart === 'undefined') {
-      console.error("Critical Error: Chart.js failed to load from CDN.");
+      alert("Chart engine is blocked by your local network. Please try opening this page on another internet connection or mobile hotspot.");
       return;
     }
 
-    const CATEGORIES = { AI: 4, Language: 3, OtherTech: 2, Engineering: 1 };
-
-    // Self-contained data structure
-    const rawData = [
-      { x: "2026-01-15", y: CATEGORIES.Engineering, title: "Data Structures & Algorithms", desc: "Mastered tree traversals, graph algorithms, and time complexity analysis.", iconUrl: "https://icons8.com" },
-      { x: "2026-02-10", y: CATEGORIES.Language, title: "TypeScript Advanced Types", desc: "Learned utility types, generics, and conditional type mapping.", iconUrl: "https://icons8.com" },
-      { x: "2026-03-05", y: CATEGORIES.OtherTech, title: "Docker Containers & Networks", desc: "Configured multi-container microservice environments using docker-compose.", iconUrl: "https://icons8.com" },
-      { x: "2026-04-20", y: CATEGORIES.AI, title: "LLM Prompt Engineering", desc: "Explored multi-shot prompting, system instructions, and RAG architectures.", iconUrl: "https://icons8.com" }
+    // Time-independent milestone database structure
+    const roadmapData = [
+      { month: "Jan 2026", category: "Engineering (Base)", title: "Data Structures & Algorithms", desc: "Mastered tree traversals, graph algorithms, and time complexity analysis." },
+      { month: "Feb 2026", category: "Language", title: "TypeScript Advanced Types", desc: "Learned utility types, generics, and conditional type mapping." },
+      { month: "Mar 2026", category: "Other Tech / Techniques", title: "Docker Containers & Networks", desc: "Configured multi-container microservice environments using docker-compose." },
+      { month: "Apr 2026", category: "AI Technologies", title: "LLM Prompt Engineering", desc: "Explored multi-shot prompting, system instructions, and RAG architectures." }
     ];
 
-    // Preloads images cleanly to prevent asynchronous canvas rendering bugs
-    function preloadMilestoneImages(data) {
-      return Promise.all(data.map(item => {
-        return new Promise((resolve) => {
-          const img = new Image(30, 30);
-          img.src = item.iconUrl;
-          img.onload = () => {
-            item.pointStyle = img;
-            resolve(item);
-          };
-          img.onerror = () => {
-            item.pointStyle = 'circle'; // Standard fallback style if image fails to load
-            resolve(item);
-          };
-        });
-      }));
-    }
-
-    async function initChart() {
-      const processedPoints = await preloadMilestoneImages(rawData);
-      const ctx = document.getElementById('roadmapChart').getContext('2d');
-      
-      new Chart(ctx, {
-        type: 'scatter',
-        data: {
-          datasets: [{
-            data: processedPoints,
-            pointStyle: processedPoints.map(p => p.pointStyle),
-            pointHoverRadius: 22
-          }]
+    const ctx = document.getElementById('roadmapChart').getContext('2d');
+    
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: roadmapData.map(item => item.month),
+        datasets: [{
+          data: roadmapData.map(item => {
+            // Standardizing positioning based on categories
+            if (item.category === "AI Technologies") return 4;
+            if (item.category === "Language") return 3;
+            if (item.category === "Other Tech / Techniques") return 2;
+            return 1;
+          }),
+          backgroundColor: '#3b82f6',
+          borderRadius: 6,
+          borderSkipped: false,
+          barThickness: 40
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: (context) => ` Topic: ${roadmapData[context.dataIndex].title}`
+            }
+          }
         },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: { 
-            legend: { display: false },
-            tooltip: {
-              callbacks: {
-                label: (context) => ` Milestone: ${context.raw.title}`
+        onClick: (event, elements) => {
+          if (elements.length > 0) {
+            const index = elements[0].index;
+            const matched = roadmapData[index];
+            
+            document.getElementById('panel-title').innerText = `${matched.title} (${matched.category})`;
+            document.getElementById('panel-desc').innerText = matched.desc;
+            document.getElementById('detail-panel').style.display = 'block';
+          }
+        },
+        scales: {
+          y: {
+            min: 0,
+            max: 5,
+            ticks: {
+              stepSize: 1,
+              callback: function(value) {
+                if (value === 4) return 'AI Technologies';
+                if (value === 3) return 'Language';
+                if (value === 2) return 'Other Tech / Techniques';
+                if (value === 1) return 'Engineering (Base)';
+                return '';
               }
-            }
-          },
-          onClick: (event, elements) => {
-            if (elements.length > 0) {
-              const index = elements[0].index;
-              const matched = processedPoints[index];
-              
-              document.getElementById('panel-title').innerText = matched.title;
-              document.getElementById('panel-date').innerText = `Achieved on: ${matched.x}`;
-              document.getElementById('panel-desc').innerText = matched.desc;
-              document.getElementById('detail-panel').style.display = 'block';
-            }
-          },
-          scales: {
-            x: {
-              type: 'time',
-              time: { unit: 'month', displayFormats: { month: 'MMM yyyy' } },
-              title: { display: true, text: 'Timeline Progression', color: '#64748b' },
-              grid: { color: '#f1f5f9' }
-            },
-            y: {
-              min: 0.5,
-              max: 4.5,
-              ticks: {
-                stepSize: 1,
-                callback: function(value) {
-                  if (value === 4) return 'AI Technologies';
-                  if (value === 3) return 'Language';
-                  if (value === 2) return 'Other Tech / Techniques';
-                  if (value === 1) return 'Engineering (Base)';
-                  return '';
-                }
-              },
-              grid: { color: '#e2e8f0' }
             }
           }
         }
-      });
-    }
-
-    initChart();
+      }
+    });
   });
 </script>
 
