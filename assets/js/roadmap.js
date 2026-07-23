@@ -1,90 +1,365 @@
-const roadmapData = [
+/********************************************************************
+ * Skill Roadmap Engine - Part 1
+ * Builds the SVG canvas, grid and axes
+ ********************************************************************/
 
-{
-    title:"C",
-    month:0,
-    row:0,
-    desc:"Started programming."
-},
+const svg = document.getElementById("roadmap-svg");
 
-{
-    title:"Java",
-    month:2,
-    row:0,
-    desc:"Object Oriented Programming."
-},
+const categories = [
+    "Engineering",
+    "Technologies",
+    "Languages",
+    "AI Technologies"
+];
 
-{
-    title:"Python",
-    month:5,
-    row:2,
-    desc:"Automation and scripting."
-},
+// Colors for each lane
+const laneColors = {
+    "Engineering": "#1565c0",
+    "Technologies": "#43a047",
+    "Languages": "#fb8c00",
+    "AI Technologies": "#8e24aa"
+};
 
-{
-    title:"MySQL",
-    month:4,
-    row:1,
-    desc:"Database Development."
-},
+// Drawing area
+const chart = {
 
-{
-    title:"Apache NiFi",
-    month:8,
-    row:1,
-    desc:"Enterprise ETL Pipelines."
-},
+    width: 1400,
+    height: 650,
 
-{
-    title:"Apache Spark",
-    month:11,
-    row:1,
-    desc:"Big Data Processing."
-},
+    margin: {
+        left: 170,
+        right: 80,
+        top: 60,
+        bottom: 90
+    }
 
-{
-    title:"Machine Learning",
-    month:14,
-    row:3,
-    desc:"Neural Networks."
-},
+};
 
-{
-    title:"LLMs",
-    month:16,
-    row:3,
-    desc:"AI Agents & Automation."
+chart.innerWidth =
+    chart.width -
+    chart.margin.left -
+    chart.margin.right;
+
+chart.innerHeight =
+    chart.height -
+    chart.margin.top -
+    chart.margin.bottom;
+
+
+// SVG namespace
+const NS = "http://www.w3.org/2000/svg";
+
+function create(tag, attrs = {}) {
+
+    const el = document.createElementNS(NS, tag);
+
+    Object.entries(attrs).forEach(([k, v]) => {
+
+        el.setAttribute(k, v);
+
+    });
+
+    return el;
+
 }
 
-];
+function clearSVG() {
 
-const container=document.getElementById("roadmap-dots");
+    while (svg.firstChild)
+        svg.removeChild(svg.firstChild);
 
-const colors=[
-"#1565c0",
-"#2e7d32",
-"#ef6c00",
-"#8e24aa"
-];
+}
 
-roadmapData.forEach((item,index)=>{
+/********************************************************************
+ * Build Chart
+ ********************************************************************/
 
-    const dot=document.createElement("div");
+function buildChart() {
 
-    dot.className="roadmap-dot";
+    clearSVG();
 
-    dot.style.left=(item.month*90+50)+"px";
+    svg.setAttribute("viewBox", `0 0 ${chart.width} ${chart.height}`);
 
-    dot.style.top=(390-item.row*130)+"px";
+    drawHorizontalLanes();
 
-    dot.style.background=colors[item.row];
+    drawVerticalYears();
 
-    dot.style.animationDelay=(index*0.15)+"s";
+}
 
-    dot.innerHTML="<span>"+item.title+"</span>";
+/********************************************************************
+ * Horizontal Category Lanes
+ ********************************************************************/
 
-    dot.dataset.description=item.desc;
+function drawHorizontalLanes() {
 
-    container.appendChild(dot);
+    const laneGap =
+        chart.innerHeight /
+        (categories.length - 1);
+
+    categories.forEach((category, i) => {
+
+        const y =
+            chart.margin.top +
+            laneGap * i;
+
+        // Horizontal Line
+
+        svg.appendChild(
+
+            create("line", {
+
+                x1: chart.margin.left,
+                y1: y,
+
+                x2: chart.width - chart.margin.right,
+                y2: y,
+
+                class: "grid-line"
+
+            })
+
+        );
+
+        // Colored Guide
+
+        svg.appendChild(
+
+            create("line", {
+
+                x1: chart.margin.left,
+                y1: y,
+
+                x2: chart.margin.left + 70,
+                y2: y,
+
+                stroke: laneColors[category],
+                "stroke-width": 5,
+                "stroke-linecap": "round"
+
+            })
+
+        );
+
+        // Category Label
+
+        const label = create("text", {
+
+            x: 20,
+            y: y + 6,
+
+            class: "category-label"
+
+        });
+
+        label.textContent = category;
+
+        svg.appendChild(label);
+
+    });
+
+}
+
+/********************************************************************
+ * Years
+ ********************************************************************/
+
+
+
+function drawVerticalYears() {
+
+    const years =
+        endYear - startYear;
+
+    const spacing =
+        chart.innerWidth /
+        years;
+
+    for (let y = startYear; y <= endYear; y++) {
+
+        const x =
+            chart.margin.left +
+            (y - startYear) * spacing;
+
+        // Vertical Grid
+
+        svg.appendChild(
+
+            create("line", {
+
+                x1: x,
+                y1: chart.margin.top,
+
+                x2: x,
+                y2: chart.height - chart.margin.bottom,
+
+                class: "year-line"
+
+            })
+
+        );
+
+        // Year Label
+
+        const label = create("text", {
+
+            x: x - 18,
+            y: chart.height - 35,
+
+            class: "year-label"
+
+        });
+
+        label.textContent = y;
+
+        svg.appendChild(label);
+
+    }
+
+}
+
+/********************************************************************
+ * Resize
+ ********************************************************************/
+
+window.addEventListener("resize", () => {
+
+    buildChart();
 
 });
+
+/********************************************************************
+ * Start
+ ********************************************************************/
+let roadmap=[];
+
+let startYear=0;
+
+let endYear=0;
+
+function determineYears(){
+
+    startYear=Math.min(...roadmap.map(s=>s.year));
+
+    endYear=Math.max(...roadmap.map(s=>s.year));
+
+}
+
+/********************************************************************
+ * Load JSON
+ ********************************************************************/
+
+fetch("assets/data/roadmap.json")
+.then(r=>r.json())
+.then(data=>{
+
+    roadmap=data;
+
+    determineYears();
+
+    buildChart();
+
+    drawSkills();
+
+});
+/********************************************************************
+ * Category Position
+ ********************************************************************/
+
+function categoryY(category){
+
+    const gap=
+        chart.innerHeight/
+        (categories.length-1);
+
+    return chart.margin.top+
+           categories.indexOf(category)*gap;
+
+}
+
+/********************************************************************
+ * X Position
+ ********************************************************************/
+
+function skillX(skill){
+
+    const totalYears=endYear-startYear+1;
+
+    const yearWidth=
+        chart.innerWidth/totalYears;
+
+    return chart.margin.left+
+
+        (skill.year-startYear)*yearWidth+
+
+        ((skill.month-1)/12)*yearWidth;
+
+}
+/********************************************************************
+ * Draw Skills
+ ********************************************************************/
+
+function drawSkills(){
+
+    roadmap.forEach(skill=>{
+
+        const x=skillX(skill);
+
+        const y=categoryY(skill.category);
+
+        const dot=create("circle",{
+
+            cx:x,
+
+            cy:y,
+
+            r:7,
+
+            class:"roadmap-dot dot-"+
+
+            skill.category
+            .replace(" ","")
+            .replace("Technologies","technology")
+            .replace("Engineering","engineering")
+            .replace("Languages","language")
+            .replace("AI","ai")
+            .toLowerCase()
+
+        });
+
+        svg.appendChild(dot);
+
+        const label=create("text",{
+
+            x:x,
+
+            y:y-15,
+
+            class:"skill-label"
+
+        });
+
+        label.setAttribute("text-anchor","middle");
+
+        label.textContent=skill.title;
+
+        svg.appendChild(label);
+
+        dot.addEventListener("mouseenter",()=>{
+
+            label.style.opacity=1;
+
+            dot.setAttribute("r",10);
+
+        });
+
+        dot.addEventListener("mouseleave",()=>{
+
+            label.style.opacity=0;
+
+            dot.setAttribute("r",7);
+
+        });
+
+    });
+
+}
