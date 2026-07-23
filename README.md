@@ -2,6 +2,7 @@
 > A clean, beautiful, responsive portfolio template for Software Developers!
 
 > [https://gaurav-rm.github.io](https://gaurav-rm.github.io/)
+> https://gaurav-rm.github.io/learning-timeline.html
 
 this template developed by  
 https://varadbhogayata.github.io/
