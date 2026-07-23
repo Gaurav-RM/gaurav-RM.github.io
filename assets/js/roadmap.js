@@ -224,7 +224,9 @@ function drawVerticalYears() {
 window.addEventListener("resize", () => {
 
     buildChart();
+connectSkills();
 
+drawSkills();
 });
 
 /********************************************************************
@@ -354,12 +356,100 @@ function drawSkills(){
 
         dot.addEventListener("mouseleave",()=>{
 
-            label.style.opacity=0;
-
-            dot.setAttribute("r",7);
+            showPopup(skill);
 
         });
 
     });
+
+}
+/********************************************************************
+ * Connect Skills
+ ********************************************************************/
+
+function connectSkills() {
+
+    categories.forEach(category => {
+
+        const skills = roadmap
+            .filter(s => s.category === category)
+            .sort((a, b) => {
+                if (a.year !== b.year) return a.year - b.year;
+                return a.month - b.month;
+            });
+
+        for (let i = 0; i < skills.length - 1; i++) {
+
+            const x1 = skillX(skills[i]);
+            const y1 = categoryY(skills[i].category);
+
+            const x2 = skillX(skills[i + 1]);
+            const y2 = categoryY(skills[i + 1].category);
+
+            const line = create("line", {
+
+                x1: x1,
+                y1: y1,
+
+                x2: x2,
+                y2: y2,
+
+                stroke: laneColors[category],
+                "stroke-width": 4,
+                "stroke-linecap": "round",
+                opacity: 0.5
+
+            });
+
+            svg.insertBefore(line, svg.firstChild);
+
+        }
+
+    });
+
+}
+/********************************************************************
+ * Popup
+ ********************************************************************/
+
+function showPopup(skill){
+
+    let popup=document.getElementById("roadmap-popup");
+
+    if(!popup){
+
+        popup=document.createElement("div");
+
+        popup.id="roadmap-popup";
+
+        popup.className="roadmap-popup";
+
+        document.body.appendChild(popup);
+
+    }
+
+    popup.innerHTML=`
+
+        <span class="popup-close">&times;</span>
+
+        <h3>${skill.title}</h3>
+
+        <p><b>Category:</b> ${skill.category}</p>
+
+        <p><b>Date:</b> ${skill.month}/${skill.year}</p>
+
+        <hr>
+
+        <p>${skill.description}</p>
+
+    `;
+
+    popup.classList.add("show");
+
+    popup.querySelector(".popup-close").onclick=()=>{
+
+        popup.classList.remove("show");
+
+    };
 
 }
