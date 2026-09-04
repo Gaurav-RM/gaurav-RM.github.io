@@ -6,10 +6,10 @@
 const svg = document.getElementById("roadmap-svg");
 
 const categories = [
-    "Engineering",
+  "AI Technologies",
     "Technologies",
     "Languages",
-    "AI Technologies"
+    "Engineering"
 ];
 
 // Colors for each lane
