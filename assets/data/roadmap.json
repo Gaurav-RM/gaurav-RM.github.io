@@ -70,12 +70,33 @@
         "month":8,
         "description":"Automation."
     },
-  
-    {
+      
+   {
         "title":"C",
+        "category":"Languages",
+        "year":1920,
+        "month":8,
+        "description":"First Step."
+    },
+    {
+        "title":"Mechanical",
         "category":"Engineering",
-        "year":2021,
-        "month":3,
-        "description":"Started programming."
+        "year":2013,
+        "month":8,
+        "description":"Basic Engineering ."
+    },
+        {
+        "title":"Jr Engineer",
+        "category":"Engineering",
+        "year":2018,
+        "month":8,
+        "description":"Working as CAD Engineer."
+    },
+      {
+        "title":"Sr Engineer",
+        "category":"Engineering",
+        "year":2019,
+        "month":8,
+        "description":"leading chassis wiring and harness design project for commercial trucks."
     }
 ]
