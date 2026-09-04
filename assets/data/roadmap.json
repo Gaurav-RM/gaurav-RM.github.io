@@ -1,10 +1,18 @@
 [
+      {
+        "title":"Machine Learning",
+        "category":"AI Technologies",
+        "year":2025,
+        "month":11,
+        "description":"ML Fundamentals."
+    },
+
     {
-        "title":"C",
-        "category":"Engineering",
-        "year":2021,
-        "month":3,
-        "description":"Started programming."
+        "title":"AI Agents",
+        "category":"AI Technologies",
+        "year":2026,
+        "month":5,
+        "description":"LangGraph & MCP."
     },
 
     {
@@ -22,23 +30,15 @@
         "month":9,
         "description":"Daily Linux usage."
     },
-
+    
     {
-        "title":"Docker",
+        "title":"Promox",
         "category":"Technologies",
-        "year":2023,
-        "month":4,
-        "description":"Containerization."
+        "year":2025,
+        "month":5,
+        "description":"To construct home lab"
     },
-
-    {
-        "title":"Python",
-        "category":"Languages",
-        "year":2023,
-        "month":8,
-        "description":"Automation."
-    },
-
+    
     {
         "title":"Apache NiFi",
         "category":"Technologies",
@@ -56,18 +56,26 @@
     },
 
     {
-        "title":"Machine Learning",
-        "category":"AI Technologies",
-        "year":2025,
-        "month":11,
-        "description":"ML Fundamentals."
+        "title":"Docker",
+        "category":"Technologies",
+        "year":2023,
+        "month":4,
+        "description":"Containerization."
     },
 
     {
-        "title":"AI Agents",
-        "category":"AI Technologies",
-        "year":2026,
-        "month":5,
-        "description":"LangGraph & MCP."
+        "title":"Python",
+        "category":"Languages",
+        "year":2023,
+        "month":8,
+        "description":"Automation."
+    },
+  
+    {
+        "title":"C",
+        "category":"Engineering",
+        "year":2021,
+        "month":3,
+        "description":"Started programming."
     }
 ]
